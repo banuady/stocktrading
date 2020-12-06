@@ -52,7 +52,7 @@ class IndividualStock extends React.Component {
     } else {
       return (
         <div>
-          <Link to={`/sell/${stock.id}`} className="ui button primary">
+          <Link to={`/stocks/sell/${stock.id}`} className="ui button primary">
             Sell
           </Link>
         </div>

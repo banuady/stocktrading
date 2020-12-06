@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 
@@ -32,7 +33,11 @@ class StockForm extends React.Component {
   };
 
   render() {
-    // console.log(this.props);
+    if (!this.props.isSignedIn) {
+      return <div>You need to be logged in first!</div>;
+    }
+
+    console.log(this.props);
     return (
       <form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
         <Field name="symbol" component={this.renderInput} type="text" label="Enter Stock Symbol(*)" />
@@ -42,7 +47,7 @@ class StockForm extends React.Component {
         <Field name="quantity" component={this.renderInput} type="number" min="0" step="1" label="Quantity(*)" />
         <Field name="fees" component={this.renderInput} type="number" label="Broker's Commission(*)" />
         <button className="ui button primary left floated">Submit</button>
-        <Link to="/" className="ui button right floated">
+        <Link to="/stocks" className="ui button right floated">
           Cancel
         </Link>
       </form>
@@ -89,7 +94,18 @@ const validate = (formValues) => {
   return errors;
 };
 
-export default reduxForm({
-  form: 'stockForm',
-  validate: validate,
-})(StockForm);
+const mapStateToProps = (state) => {
+  return { isSignedIn: state.auth.isSignedIn };
+};
+
+// export default reduxForm({
+//   form: 'stockForm',
+//   validate: validate,
+// })(StockForm);
+
+export default connect(mapStateToProps)(
+  reduxForm({
+    form: 'stockForm',
+    validate: validate,
+  })(StockForm)
+);

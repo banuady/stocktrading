@@ -1,9 +1,31 @@
 import stocks from '../apis/stocks';
 import history from '../history';
-import { CREATE_STOCK, SELL_STOCK, FETCH_ALL_STOCKS, FETCH_STOCK, DELETE_STOCK } from './types';
+import {
+  SIGN_IN,
+  SIGN_OUT,
+  CREATE_STOCK,
+  SELL_STOCK,
+  FETCH_ALL_STOCKS,
+  FETCH_STOCK,
+  EDIT_STOCK,
+  DELETE_STOCK,
+} from './types';
 
-export const createStock = (formValues) => async (dispatch) => {
-  // const response = await stocks.post('/stocks', { ...formValues, status: 'active' });
+export const signIn = (userId) => {
+  return {
+    type: SIGN_IN,
+    payload: userId,
+  };
+};
+
+export const signOut = () => {
+  return {
+    type: SIGN_OUT,
+  };
+};
+
+export const createStock = (formValues) => async (dispatch, getState) => {
+  const { userId } = getState().auth;
   const response = await stocks.post('/stocks', {
     symbol: formValues.symbol,
     name: formValues.name,
@@ -14,6 +36,7 @@ export const createStock = (formValues) => async (dispatch) => {
       fees: formValues.fees,
     },
     status: 'active',
+    userId,
   });
 
   dispatch({
@@ -21,7 +44,7 @@ export const createStock = (formValues) => async (dispatch) => {
     payload: response.data,
   });
 
-  history.push('/');
+  history.push('/stocks');
 };
 
 export const sellStock = (id, formValues) => async (dispatch) => {
@@ -40,11 +63,12 @@ export const sellStock = (id, formValues) => async (dispatch) => {
     payload: response.data,
   });
 
-  history.push('/');
+  history.push('/stocks');
 };
 
-export const fetchAllStocks = () => async (dispatch) => {
-  const response = await stocks.get('/stocks');
+export const fetchAllStocks = () => async (dispatch, getState) => {
+  const { userId } = getState().auth;
+  const response = await stocks.get(`/stocks?userId=${userId}`);
 
   dispatch({
     type: FETCH_ALL_STOCKS,
@@ -61,6 +85,26 @@ export const fetchStock = (id) => async (dispatch) => {
   });
 };
 
+export const editStock = (id, formValues, status) => async (dispatch) => {
+  const response = await stocks.patch(`/stocks/${id}`, {
+    symbol: formValues.symbol,
+    name: formValues.name,
+    [status]: {
+      date: formValues.date,
+      unitPrice: formValues.unitPrice,
+      quantity: formValues.quantity,
+      fees: formValues.fees,
+    },
+  });
+
+  dispatch({
+    type: EDIT_STOCK,
+    payload: response.data,
+  });
+
+  history.push('/stocks');
+};
+
 export const deleteStock = (id) => async (dispatch) => {
   await stocks.delete(`/stocks/${id}`);
 
@@ -69,5 +113,5 @@ export const deleteStock = (id) => async (dispatch) => {
     payload: id,
   });
 
-  history.push('/');
+  history.push('/stocks');
 };

@@ -19,7 +19,7 @@ class DeleteStock extends React.Component {
         <button onClick={() => this.props.deleteStock(id)} className="ui button negative">
           Delete
         </button>
-        <Link to="/" className="ui button">
+        <Link to="/stocks" className="ui button">
           Cancel
         </Link>
       </React.Fragment>
@@ -27,14 +27,22 @@ class DeleteStock extends React.Component {
   }
 
   renderContent() {
-    if (!this.props.stock) {
-      return 'Are you sure you want to delete this stock?';
-    }
-
     return `Are you sure you want to delete the entry for ${this.props.stock.symbol} stock from your Portfolio?`;
   }
 
   render() {
+    if (!this.props.isSignedIn) {
+      return <div>Access Denied! You need to be signed in first!</div>;
+    }
+
+    if (!this.props.stock) {
+      return <div>Loading...</div>;
+    }
+
+    if (this.props.stock.userId !== this.props.currentUserId) {
+      return <div>You cannot delete this stock!</div>;
+    }
+
     return (
       <Modal
         title="Delete Stock"
@@ -48,6 +56,8 @@ class DeleteStock extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    isSignedIn: state.auth.isSignedIn,
+    currentUserId: state.auth.userId,
     stock: state.stocks[ownProps.match.params.id],
   };
 };

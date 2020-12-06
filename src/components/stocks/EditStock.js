@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Radio } from 'semantic-ui-react';
-import { fetchStock } from '../../actions';
+import { fetchStock, editStock } from '../../actions';
 import StockForm from './StockForm';
 
 class EditStock extends React.Component {
@@ -73,13 +73,21 @@ class EditStock extends React.Component {
     }
   }
 
-  onSubmit() {
-    console.log('onSubmit function triggered');
-  }
+  onSubmit = (formValues) => {
+    this.props.editStock(this.props.match.params.id, formValues, this.state.value);
+  };
 
   render() {
+    if (!this.props.isSignedIn) {
+      return <div>Access Denied! You need to be signed in first!</div>;
+    }
+
     if (!this.props.stock) {
       return <div>Loading...</div>;
+    }
+
+    if (this.props.stock.userId !== this.props.currentUserId) {
+      return <div>We cannot find this stock in your portfolio.</div>;
     }
 
     this.setInitialValues();
@@ -112,8 +120,10 @@ class EditStock extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    isSignedIn: state.auth.isSignedIn,
+    currentUserId: state.auth.userId,
     stock: state.stocks[ownProps.match.params.id],
   };
 };
 
-export default connect(mapStateToProps, { fetchStock })(EditStock);
+export default connect(mapStateToProps, { fetchStock, editStock })(EditStock);

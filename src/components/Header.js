@@ -1,6 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
+import GoogleAuth from './GoogleAuth';
 
 class Header extends React.Component {
   state = {};
@@ -24,26 +26,42 @@ class Header extends React.Component {
   }
 
   render() {
-    return (
-      <div className="ui blue inverted menu">
-        {this.renderIndividualMenu('/', 'All Stocks')}
-        {this.renderIndividualMenu('/stocks/add', 'Add Stock')}
-        {this.renderIndividualMenu('/reports', 'Reports')}
+    if (this.props.isSignedIn) {
+      return (
+        <div className="ui blue inverted menu">
+          {this.renderIndividualMenu('/stocks', 'Stocks')}
+          {this.renderIndividualMenu('/dividents', 'Dividents')}
+          {this.renderIndividualMenu('/forex', 'Forex')}
+          {this.renderIndividualMenu('/reports', 'Reports')}
 
-        <div className="right menu">
-          <div className="item">
-            <div className="ui transparent icon input">
-              <input type="text" placeholder="Search Stock..." />
-              <i className="search link icon"></i>
+          <div className="right menu">
+            <div className="item">
+              <div className="ui transparent icon input">
+                <input type="text" placeholder="Search Stock..." />
+                <i className="search link icon"></i>
+              </div>
             </div>
+            <GoogleAuth />
           </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className="ui blue inverted menu">
+          <div className="right menu">
+            <GoogleAuth />
+          </div>
+        </div>
+      );
+    }
   }
 }
+
+const mapStateToProps = (state) => {
+  return { isSignedIn: state.auth.isSignedIn };
+};
 
 // we use "withRouter" to get access to location.pathname in props
 const WrappedHeader = withRouter(Header);
 
-export default WrappedHeader;
+export default connect(mapStateToProps)(WrappedHeader);

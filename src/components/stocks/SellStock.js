@@ -15,8 +15,16 @@ class SellStock extends React.Component {
   };
 
   render() {
+    if (!this.props.isSignedIn) {
+      return <div>Access Denied! You need to be signed in first!</div>;
+    }
+
     if (!this.props.stock) {
       return <div>Loading...</div>;
+    }
+
+    if (this.props.stock.userId !== this.props.currentUserId) {
+      return <div>We cannot find this stock in your portfolio.</div>;
     }
 
     // console.log(this.props);
@@ -39,6 +47,8 @@ class SellStock extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    isSignedIn: state.auth.isSignedIn,
+    currentUserId: state.auth.userId,
     stock: state.stocks[ownProps.match.params.id],
   };
 };
