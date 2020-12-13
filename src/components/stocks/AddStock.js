@@ -4,9 +4,9 @@ import { createStock } from '../../actions';
 import StockForm from './StockForm';
 
 class AddStock extends React.Component {
-  componentDidMount() {
-    localStorage.setItem('currentLocation', this.props.location.pathname);
-  }
+  // componentDidMount() {
+  //   localStorage.setItem('currentLocation', this.props.location.pathname);
+  // }
 
   onSubmit = (formValues) => {
     this.props.createStock(formValues);

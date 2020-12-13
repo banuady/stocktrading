@@ -17,26 +17,7 @@ class EditStock extends React.Component {
   setInitialValues() {
     const stock = this.props.stock;
 
-    if (stock.sold) {
-      this.initialValues =
-        this.state.value === 'purchased'
-          ? {
-              symbol: stock.symbol,
-              name: stock.name,
-              date: stock.purchased.date,
-              unitPrice: stock.purchased.unitPrice,
-              quantity: stock.purchased.quantity,
-              fees: stock.purchased.fees,
-            }
-          : {
-              symbol: stock.symbol,
-              name: stock.name,
-              date: stock.sold.date,
-              unitPrice: stock.sold.unitPrice,
-              quantity: stock.sold.quantity,
-              fees: stock.sold.fees,
-            };
-    } else {
+    if (this.state.value === 'purchased') {
       this.initialValues = {
         symbol: stock.symbol,
         name: stock.name,
@@ -46,31 +27,54 @@ class EditStock extends React.Component {
         fees: stock.purchased.fees,
       };
     }
+
+    if (this.state.value === 'sold') {
+      this.initialValues = {
+        symbol: stock.symbol,
+        name: stock.name,
+        date: stock.sold.date,
+        unitPrice: stock.sold.unitPrice,
+        quantity: stock.sold.quantity,
+        fees: stock.sold.fees,
+      };
+    }
+
+    if (this.state.value === 'dividents') {
+      this.initialValues = {
+        symbol: stock.symbol,
+        name: stock.name,
+        date: stock.dividents.date,
+        unitPrice: stock.dividents.unitPrice,
+        quantity: stock.dividents.quantity,
+        fees: stock.dividents.fees,
+      };
+    }
   }
 
   toggleSoldButtonVisibility() {
-    if (this.props.stock.sold) {
-      return (
-        <Radio
-          label="Sold"
-          name="radioGroup"
-          value="sold"
-          checked={this.state.value === 'sold'}
-          onChange={this.handleChange}
-        />
-      );
-    } else {
-      return (
-        <Radio
-          label="Sold"
-          name="radioGroup"
-          value="sold"
-          disabled
-          checked={this.state.value === 'sold'}
-          onChange={this.handleChange}
-        />
-      );
-    }
+    return (
+      <Radio
+        label="Sold"
+        name="radioGroup"
+        value="sold"
+        disabled={this.props.stock.sold ? false : true}
+        checked={this.state.value === 'sold'}
+        onChange={this.handleChange}
+      />
+    );
+  }
+
+  toggleDividentsButtonVisibility() {
+    return (
+      <Radio
+        label="Dividents"
+        name="radioGroup"
+        value="dividents"
+        disabled={this.props.stock.dividents ? false : true}
+        checked={this.state.value === 'dividents'}
+        onChange={this.handleChange}
+      />
+    );
   }
 
   onSubmit = (formValues) => {
@@ -78,6 +82,7 @@ class EditStock extends React.Component {
   };
 
   render() {
+    // console.log(this.props);
     if (!this.props.isSignedIn) {
       return <div>Access Denied! You need to be signed in first!</div>;
     }
@@ -109,6 +114,7 @@ class EditStock extends React.Component {
               />
             </Form.Field>
             <Form.Field>{this.toggleSoldButtonVisibility()}</Form.Field>
+            <Form.Field>{this.toggleDividentsButtonVisibility()}</Form.Field>
           </Form.Group>
         </Form>
         <hr />

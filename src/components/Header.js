@@ -30,7 +30,6 @@ class Header extends React.Component {
       return (
         <div className="ui blue inverted menu">
           {this.renderIndividualMenu('/stocks', 'Stocks')}
-          {this.renderIndividualMenu('/dividents', 'Dividents')}
           {this.renderIndividualMenu('/forex', 'Forex')}
           {this.renderIndividualMenu('/reports', 'Reports')}
 

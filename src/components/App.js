@@ -8,8 +8,7 @@ import AddStock from './stocks/AddStock';
 import EditStock from './stocks/EditStock';
 import SellStock from './stocks/SellStock';
 import DeleteStock from './stocks/DeleteStock';
-import AllDividents from './dividents/AllDividents';
-import AddDividents from './dividents/AddDividents';
+import AddDividents from './stocks/AddDividents';
 import AllForex from './forex/AllForex';
 import AddForex from './forex/AddForex';
 import Reports from './Reports';
@@ -27,8 +26,7 @@ const App = () => {
             <Route path="/stocks/edit/:id" exact component={EditStock} />
             <Route path="/stocks/sell/:id" exact component={SellStock} />
             <Route path="/stocks/delete/:id" exact component={DeleteStock} />
-            <Route path="/dividents" exact component={AllDividents} />
-            <Route path="/dividents/add" exact component={AddDividents} />
+            <Route path="/dividents/add/:id" exact component={AddDividents} />
             <Route path="/forex" exact component={AllForex} />
             <Route path="/forex/add" exact component={AddForex} />
             <Route path="/reports" exact component={Reports} />

@@ -1,5 +1,13 @@
 import _ from 'lodash';
-import { CREATE_STOCK, SELL_STOCK, FETCH_ALL_STOCKS, FETCH_STOCK, EDIT_STOCK, DELETE_STOCK } from '../actions/types';
+import {
+  CREATE_STOCK,
+  SELL_STOCK,
+  FETCH_ALL_STOCKS,
+  FETCH_STOCK,
+  EDIT_STOCK,
+  DELETE_STOCK,
+  ADD_DIVIDENTS,
+} from '../actions/stockTypes';
 
 export default (state = {}, action) => {
   switch (action.type) {
@@ -13,6 +21,8 @@ export default (state = {}, action) => {
     case SELL_STOCK:
       return { ...state, [action.payload.id]: action.payload };
     case EDIT_STOCK:
+      return { ...state, [action.payload.id]: action.payload };
+    case ADD_DIVIDENTS:
       return { ...state, [action.payload.id]: action.payload };
     case DELETE_STOCK:
       return _.omit(state, action.payload);

@@ -16,6 +16,7 @@ class ShowStocksTable extends React.Component {
         <Table.HeaderCell>Symbol</Table.HeaderCell>
         <Table.HeaderCell>Purchased</Table.HeaderCell>
         <Table.HeaderCell>Sold</Table.HeaderCell>
+        <Table.HeaderCell>Dividents</Table.HeaderCell>
         <Table.HeaderCell>P/L</Table.HeaderCell>
         <Table.HeaderCell></Table.HeaderCell>
       </Table.Row>

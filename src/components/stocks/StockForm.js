@@ -37,7 +37,7 @@ class StockForm extends React.Component {
       return <div>You need to be logged in first!</div>;
     }
 
-    console.log(this.props);
+    // console.log(this.props);
     return (
       <form onSubmit={this.props.handleSubmit(this.onSubmit)} className="ui form error">
         <Field name="symbol" component={this.renderInput} type="text" label="Enter Stock Symbol(*)" />
@@ -60,7 +60,7 @@ const validate = (formValues) => {
   const errors = {};
 
   if (!formValues.symbol) {
-    errors.stockSymbol = 'You must enter a Stock Symbol!';
+    errors.symbol = 'You must enter a Stock Symbol!';
   }
 
   if (!formValues.date) {
